@@ -1,0 +1,49 @@
+ETL Case Study - Documentation
+
+Source: Case Study Document.pdf
+
+1. Assumptions
+---------------
+1. Input data consists of customers.csv, products.csv, and transactions.csv.
+2. Files may contain duplicates, inconsistent casing, missing values, and variable date formats.
+3. Dates must be standardized to ISO format (YYYY-MM-DD).
+4. Missing 'region' in customers replaced with 'Unknown'.
+5. Negative stock values replaced with 0.
+6. Rows missing 'quantity' or 'price' are dropped.
+7. Profit calculated as (price - cost_price) * quantity.
+8. Centralized transaction table created by joining all entities.
+9. Final outputs stored as cleaned CSVs and SQL-ready tables.
+
+2. Cleaning Rules
+------------------
+Customers:
+- Drop duplicates by customer_id.
+- Title-case first_name, last_name, region.
+- Replace missing region with 'Unknown'.
+- Standardize signup_date to YYYY-MM-DD.
+
+Products:
+- Drop duplicates by product_id.
+- Title-case product_name, category.
+- Convert negative stock_quantity to 0.
+- Ensure cost_price numeric and non-negative.
+
+Transactions:
+- Drop duplicates by transaction_id.
+- Remove rows missing quantity or price.
+- Coerce quantity, price to numeric.
+- Standardize transaction_date to YYYY-MM-DD.
+
+3. Transformations
+-------------------
+- Join customers, products, and transactions to form central fact table.
+- Derived fields:
+    * customer_name = first_name + ' ' + last_name
+    * revenue = price * quantity
+    * profit = (price - cost_price) * quantity
+- Aggregations:
+    * Total transactions per region
+    * Revenue by category
+    * Top 5 products by revenue
+    * Products with margin <10%
+- Data normalization: Title Case text, replace NULLs, unify date format.
